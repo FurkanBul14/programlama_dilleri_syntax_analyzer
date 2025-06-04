@@ -109,12 +109,7 @@ Projeye katkıda bulunmak isterseniz:
 - Satır numaraları ve otomatik tamamlama özellikleri.
 - Koyu/aydınlık tema desteği.
 
-## Lisans
-Bu proje [MIT Lisansı](LICENSE) ile lisanslanmıştır.
 
-## İletişim
-Sorularınız için: [email@example.com](mailto:email@example.com)
 
----
 
-**Son Güncelleme**: 5 Haziran 2025
+
