@@ -1,6 +1,6 @@
 # Gerçek Zamanlı Gramer Tabanlı Sözdizimi Renklendirici ve Arayüz
 
-![Proje Demosu](demo/ekran-goruntusu.png)  
+![Proje Demosu](ekran-goruntusu.png)  
 *Uygulamanın çalışırken bir ekran görüntüsü.*
 
 ## Genel Bakış
