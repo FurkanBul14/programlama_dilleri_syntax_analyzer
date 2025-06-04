@@ -95,13 +95,6 @@ if (x > 0 {
 - **Demo Videosu**: [YouTube Linki](https://youtube.com/demo-link) *(Yüklenmediyse linki güncelleyin)*
 - **Ekran Görüntüleri**: `demo/` klasöründe bulabilirsiniz.
 
-## Katkıda Bulunma
-Projeye katkıda bulunmak isterseniz:
-1. Depoyu forklayın.
-2. Yeni bir branch oluşturun: `git checkout -b ozellik-adi`
-3. Değişikliklerinizi yapın ve commit edin: `git commit -m "Yeni özellik eklendi"`
-4. Branch'inizi push edin: `git push origin ozellik-adi`
-5. Bir Pull Request açın.
 
 ## Gelecek Geliştirmeler
 - `else`, `switch` gibi yapıların desteklenmesi.
