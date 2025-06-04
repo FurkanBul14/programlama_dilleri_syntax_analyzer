@@ -1,6 +1,6 @@
 # programlama_dilleri_syntax_analyzer
 Real-Time Grammar-Based Syntax Highlighter with GUI
-Giriş
+# Giriş
 Modern kod editörleri, yalnızca sözdizimi renklendirmesi (syntax highlighting) yapmakla kalmaz, aynı zamanda gramer tabanlı analiz yaparak hatalı kodları anında kullanıcıya bildirir. Bu proje, Java ve Swing kullanılarak "Real-Time Grammar-Based Syntax Highlighter with GUI" geliştirilmesini hedefliyor. Kullanıcı kod yazarken, metin önce lexical analiz (tokenlaştırma) ile token'lara ayrılıyor, ardından sözdizimi analizi (parser) ile gramer kurallarına uygunluğu kontrol ediliyor. En az beş farklı token türü gerçek zamanlı olarak renklendiriliyor ve hatalı kısımlar kırmızı alt çizgiyle işaretleniyor. Ayrıca, durum çubuğunda kodun geçerli olup olmadığına dair anlık geri bildirim (✅ Geçerli yapı veya ❌ Hata: ...) sağlanıyor.
 Bu makalede:
 
@@ -11,14 +11,14 @@ Gerçek zamanlı renklendirme şemamızı,
 GUI bileşenlerimizi,
 
 adım adım açıklayacağım. Ayrıca, karşılaştığım zorluklar ve çözümlerimi de paylaşacağım.
-1. Programlama Dili ve Gramer Seçimi
-1.1 Neden Java ve Swing?
+#1. Programlama Dili ve Gramer Seçimi
+#1.1 Neden Java ve Swing?
 
 Swing Kütüphanesi: Java'nın standart GUI aracı Swing, JTextPane ve StyledDocument ile her karakter aralığına kolayca stil (renk, alt çizgi vb.) uygulayabilmemizi sağlıyor. Özellikle hata vurgulama için alt çizgi (StyleConstants.Underline) özelliği Swing'de oldukça pratik.
 Platform Bağımsızlığı: Java ile derlenen JAR dosyası, farklı işletim sistemlerinde (Windows, macOS, Linux) sorunsuz çalışabiliyor.
 Kolay Implementasyon: Java'nın zengin API'leri ve nesne yönelimli yapısı, lexical ve syntax analiz için modüler bir tasarım yapmamızı kolaylaştırdı.
 
-1.2 Desteklenen Gramer
+#1.2 Desteklenen Gramer
 Projenin amacı, Java dilinin bir alt kümesini (subset) desteklemek ve temel yapıların gerçek zamanlı analizini yapmaktır. Aşağıdaki yapılar destekleniyor:
 
 Değişken Tanımlama:
@@ -56,8 +56,8 @@ System.out.println("Sonuç: " + x);
 
 
 Bu gramer, else, switch, lambda ifadeleri gibi daha karmaşık yapıları desteklemiyor. Ancak, temel kontrol yapıları, metotlar ve sınıflar için geniş bir destek sunuyor. İleride daha fazla yapı eklenebilir.
-2. Leksik (Lexical) Analiz
-2.1 State Diagram & Program Implementation Yaklaşımı
+#2.  Lexical Analiz
+#2.1 State Diagram & Program Implementation Yaklaşımı
 Amaç: Girdi metnini en küçük anlamsal birimlere (token'lara) ayırmak.
 Lexical analiz için State Diagram & Program Implementation yöntemini seçtik:
 
@@ -65,7 +65,7 @@ State Diagram: Her karakter okunduğunda bir duruma geçiş yapılır. Örneğin
 Program Implementation: Bu durumlar, doğrudan Java koduyla (if-else bloklarıyla) uygulanır; bir tablo kullanılmaz.
 
 LexicalAnalyzer sınıfında, analyzeWithPositions metodu bu yaklaşımı kullanır. Karakterler tek tek okunur ve duruma göre token'lar oluşturulur.
-2.2 Token Sınıfı
+#2.2 Token Sınıfı
 enum TokenType {
     KEYWORD, NUMBER, STRING, OPERATOR, IDENTIFIER, PARENTHESIS, COMMENT
 }
@@ -96,7 +96,7 @@ type: Token'ın türü (enum).
 value: Token'ın metinsel değeri (örneğin, if veya 123).
 startPos, endPos: Metin içindeki başlangıç ve bitiş indeksleri (renklendirme ve hata işaretleme için).
 
-2.3 analyzeWithPositions Metodu
+#2.3 analyzeWithPositions Metodu
 LexicalAnalyzer sınıfındaki analyzeWithPositions metodu, metni tarar ve token'ları oluşturur. İşte bir örnek:
 if (Character.isDigit(c)) {
     int start = i;
@@ -121,21 +121,21 @@ Bu yöntemle, KEYWORD, IDENTIFIER, OPERATOR, STRING, PARENTHESIS ve COMMENT toke
 
 "int x = 5;" → KEYWORD("int"), IDENTIFIER("x"), OPERATOR("="), NUMBER("5"), PARENTHESIS(";").
 
-3. Parser (Sözdizimi Analizörü)
-3.1 Genel Yapı
+#3. Parser (Sözdizimi Analizörü)
+#3.1 Genel Yapı
 Sözdizimi analizi için Top-Down Parsing yöntemini seçtik. Bu yaklaşımda, parse tree yukarıdan aşağıya (preorder) izlenir:
 
 Önce üst seviye yapılar (class, method, if, while, for) kontrol edilir.
 Ardından içteki ifadeler (koşullar, gövde) analiz edilir.
 
 SyntaxAnalyzer sınıfı bu mantığı uygular. analyzeWithPositions metodu, token listesini tarar ve gramer kurallarına uygunluğu kontrol eder.
-3.2 Hata Tespiti: startPos ve endPos
+#3.2 Hata Tespiti: startPos ve endPos
 Hatalı bir yapı tespit edildiğinde, ilgili token'ın başlangıç ve bitiş pozisyonları (startPos, endPos) kaydedilir. Örneğin:
 
 "if (x > 0 {" → Eksik ), hata startPos ve endPos ile { token'ında işaretlenir.
 
 Bu pozisyonlar, GUI'de kırmızı alt çizgiyle hata vurgusu yapmak için kullanılır.
-3.3 Detaylı Kod Örneği
+#3.3 Detaylı Kod Örneği
 SyntaxAnalyzer sınıfından if bloğu kontrolü:
 if (t.getType() == TokenType.KEYWORD && t.getValue().equals("if")) {
     int j = i + 1;
@@ -161,8 +161,8 @@ Hata varsa, ilgili token'ın pozisyonları ile birlikte hata mesajı döndürül
 
 
 
-4. Gerçek-Zamanlı Renklendirme (Highlighting) Şeması
-4.1 Stil (Renk) Tanımları
+#4. Gerçek-Zamanlı Renklendirme (Highlighting) Şeması
+#4.1 Stil (Renk) Tanımları
 EditorPanel sınıfında, JTextPane için renkler tanımlanır:
 Style keywordStyle = doc.addStyle("KEYWORD", null);
 StyleConstants.setForeground(keywordStyle, Color.BLUE); // #0000FF
@@ -198,7 +198,7 @@ ERROR: Kırmızı alt çizgi – Hatalar net görülsün.
 
 
 
-4.2 Metni Renklendirme (highlight)
+#4.2 Metni Renklendirme (highlight)
 EditorPanel sınıfındaki highlight metodu:
 private void highlight() {
     String text = textPane.getText();
@@ -231,7 +231,7 @@ LexicalAnalyzer ile token'lar alınır ve her token türüne uygun renk uygulan�
 SyntaxAnalyzer ile sözdizimi kontrol edilir; hata varsa ilgili aralık kırmızı alt çizgiyle işaretlenir.
 Durum çubuğunda (statusLabel) sonuç gösterilir.
 
-4.3 Performans Optimizasyonu: DocumentListener ve Timer
+#4.3 Performans Optimizasyonu: DocumentListener ve Timer
 highlightTimer = new Timer(300, e -> {
     highlight();
     highlightTimer.stop();
@@ -249,7 +249,7 @@ Her metin değiştiğinde (insertUpdate, removeUpdate, changedUpdate), highlight
 300 ms içinde başka bir değişiklik olmazsa highlight() çalışır.
 Bu, hızlı yazma sırasında GUI'nin kilitlenmesini önler ve performansı artırır.
 
-5. GUI (Grafiksel Kullanıcı Arayüzü) Uygulaması
+#5. GUI (Grafiksel Kullanıcı Arayüzü) Uygulaması
 EditorPanel sınıfı, Swing tabanlı GUI'nin temelini oluşturur:
 public class EditorPanel extends JFrame {
     private JTextPane textPane;
@@ -287,19 +287,19 @@ Kod Yazma Alanı: JTextPane, Consolas fontu ile monospace bir görünüm.
 Durum Çubuğu: JLabel ile ✅ Geçerli yapı veya ❌ Hata: ... mesajları.
 Gecikmeli Renklendirme: Timer ve DocumentListener kombinasyonu.
 
-6. Karşılaşılan Zorluklar ve Çözümler
-6.1 Renk Kaymaları
+#6. Karşılaşılan Zorluklar ve Çözümler
+#6.1 Renk Kaymaları
 Sorun: Bazen token'ların renklendirme aralıkları kayıyordu (örneğin, bir KEYWORD'ün rengi yanındaki token'a taşıyordu).Çözüm: LexicalAnalyzer'ın pozisyon hesaplamalarını (startPos, endPos) daha dikkatli kontrol ettik. Her token'ın aralığının doğru hesaplandığından emin olduk.
-6.2 İç İçe Yapılar
+#6.2 İç İçe Yapılar
 Sorun: İç içe yapılar (örneğin, if içinde while) ilk başta doğru analiz edilmiyordu.Çözüm: SyntaxAnalyzer'da analyzeAll metodu ile her bloğu ayrı ayrı kontrol eden bir yapı kurduk. Parantez ve süslü parantez eşleşmelerini takip ederek iç içe yapıların doğruluğunu sağladık.
-6.3 Performans Sorunları
+#6.3 Performans Sorunları
 Sorun: Hızlı yazma sırasında highlight() metodunun her karakterde çalışması GUI'de gecikmelere neden oluyordu.Çözüm: 300 ms gecikmeli bir Timer ve DocumentListener kombinasyonu kullandık. Böylece yalnızca yazma durduğunda renklendirme tetikleniyor.
-6.4 Hatalı Token Konumlandırma
+#6.4 Hatalı Token Konumlandırma
 Sorun: Eksik parantez veya ayırıcı (;) gibi durumlarda hata vurgusu yanlış yerde gösteriliyordu.Çözüm: Hatalı token'ın startPos ve endPos değerlerini bir önceki token'a atayarak, hatanın daha mantıklı bir yerde (örneğin, eksik ) yerine önceki token) gösterilmesini sağladık.
-6.5 Karmaşık Yapılar
+#6.5 Karmaşık Yapılar
 Sorun: for döngüsü gibi karmaşık yapılar (örneğin, int i = 0; i < 5; i++) ilk başta doğru parse edilmiyordu.Çözüm: SyntaxAnalyzer'da for döngüsünün iç yapısını (başlatma, koşul, artırma) ayrı ayrı kontrol eden bir kural ekledik.
-7. Sonuç ve Gelecek Geliştirmeler
-7.1 Proje Sonucu
+#7. Sonuç ve Gelecek Geliştirmeler
+#7.1 Proje Sonucu
 Bu proje ile:
 
 Leksiksel analizde 7 farklı token türü (KEYWORD, NUMBER, STRING, OPERATOR, IDENTIFIER, PARENTHESIS, COMMENT) başarıyla ayrıştırıldı.
@@ -309,7 +309,7 @@ Gerçek zamanlı renklendirme, Timer ve DocumentListener ile performanslı bir �
 GUI, renklendirme, hata vurgulama ve durum mesajlarını içeren işlevsel bir mini-IDE deneyimi sundu.
 
 Bu adımlar, ödevin tüm gereksinimlerini (kaynak kod, dökümantasyon, demo video ve makale) karşıladı.
-7.2 Gelecek Geliştirmeler
+#7.2 Gelecek Geliştirmeler
 
 Daha Fazla Yapı Desteği: else, switch, lambda ifadeleri gibi yapılar eklenebilir.
 Semantik Analiz: Değişkenlerin tanımlı olup olmadığını kontrol eden bir sembol tablosu eklenebilir.
@@ -318,13 +318,13 @@ Kod Temizliği: Kullanılmayan metodlar (örneğin, LexicalAnalyzer'da analyze) 
 Satır Numaraları: GUI'ye satır numaraları eklenerek hata ayıklama kolaylaştırılabilir.
 Tema Desteği: Açık/koyu tema seçenekleri eklenebilir.
 
-8. Kısa Kod Parçacığı Örnekleri
-8.1 Token Türleri
+#8. Kısa Kod Parçacığı Örnekleri
+#8.1 Token Türleri
 enum TokenType {
     KEYWORD, NUMBER, STRING, OPERATOR, IDENTIFIER, PARENTHESIS, COMMENT
 }
 
-8.2 Lexical Analiz: Sayı Token'ı
+#8.2 Lexical Analiz: Sayı Token'ı
 if (Character.isDigit(c)) {
     int start = i;
     while (i < input.length() && Character.isDigit(input.charAt(i))) i++;
@@ -336,7 +336,7 @@ if (Character.isDigit(c)) {
     continue;
 }
 
-8.3 Syntax Analiz: if Bloğu
+#8.3 Syntax Analiz: if Bloğu
 if (t.getType() == TokenType.KEYWORD && t.getValue().equals("if")) {
     int j = i + 1;
     while (j < tokens.size() && tokens.get(j).getType() == TokenType.WHITESPACE) j++;
@@ -344,13 +344,13 @@ if (t.getType() == TokenType.KEYWORD && t.getValue().equals("if")) {
         return new SyntaxResult("❌ Hata: if bloğunda '(' eksik", tokens.get(j-1).startPos, tokens.get(j-1).endPos);
 }
 
-8.4 Renklendirme
+#8.4 Renklendirme
 for (LexicalAnalyzer.TokenWithPosition token : tokens) {
     Style style = doc.getStyle(token.getType().name());
     doc.setCharacterAttributes(token.getStartPos(), token.getEndPos() - token.getStartPos(), style, true);
 }
 
-8.5 Hata Vurgulama
+#8.5 Hata Vurgulama
 for (SyntaxAnalyzer.SyntaxResult result : results) {
     if (result.getMessage().startsWith("❌")) {
         Style errorStyle = doc.getStyle("ERROR");
@@ -358,7 +358,7 @@ for (SyntaxAnalyzer.SyntaxResult result : results) {
     }
 }
 
-9. Demo ve Sonraki Adımlar
+#9. Demo ve Sonraki Adımlar
 Bu makale, GitHub Pages üzerinde yayımlanacak.Demo video şu örnekleri gösterecek:
 
 "int x = 5;" → Renklendirme ve ✅ Geçerli yapı.
@@ -368,9 +368,9 @@ Bu makale, GitHub Pages üzerinde yayımlanacak.Demo video şu örnekleri göste
 "int x = 5" → 5 altında kırmızı çizgi, ❌ Hata: for döngüsünde ')' eksik.
 
 Video, YouTube'a yüklenip linki paylaşılacak.
-10. Sonuç
+#10. Sonuç
 Bu proje, Java ve Swing kullanılarak gerçek zamanlı bir sözdizimi renklendirici ve hata vurgulayıcı mini-IDE geliştirdi. Temel Java yapılarını destekleyen, iç içe yapıları analiz eden ve kullanıcıya anlık geri bildirim sunan bir uygulama ortaya çıktı. LexicalAnalyzer ve SyntaxAnalyzer sınıfları, sırasıyla State Diagram & Program Implementation ve Top-Down Parsing yöntemleriyle ödevin gerekliliklerini karşıladı. Gelecekte daha fazla yapı ve semantik analiz desteği eklenerek bu uygulama daha güçlü bir hale getirilebilir.
-Kaynakça & Ekler  
+#Kaynakça & Ekler  
 
 Java Platform SE 11 – Swing Documentation (Oracle)  
 "Programlama Dilleri Projesi" PDF (Ders Koordinatörü)  
