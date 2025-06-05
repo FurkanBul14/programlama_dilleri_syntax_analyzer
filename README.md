@@ -91,9 +91,9 @@ if (x > 0 {
 - `{` altında kırmızı alt çizgi olacak.
 - Durum çubuğu `❌ Hata: if bloğunda ')' eksik` mesajını gösterecek.
 
-## Ekran Görüntüleri ve Demo
-- **Demo Videosu**: [YouTube Linki](https://youtube.com/demo-link) *(Yüklenmediyse linki güncelleyin)*
-- **Ekran Görüntüleri**: `demo/` klasöründe bulabilirsiniz.
+##  Video linki
+- **Videosu**: [YouTube Linki]([https://youtube.com/demo-link](https://www.youtube.com/watch?v=ww7JLAVdDgs)) *(Yüklenmediyse linki güncelleyin)*
+
 
 
 ## Gelecek Geliştirmeler
