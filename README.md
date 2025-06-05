@@ -92,7 +92,7 @@ if (x > 0 {
 - Durum çubuğu `❌ Hata: if bloğunda ')' eksik` mesajını gösterecek.
 
 ##  Video linki
-- **Videosu**: [YouTube Linki]([https://www.youtube.com/watch?v=ww7JLAVdDgs]) *(Yüklenmediyse linki güncelleyin)*
+- **Videosu**: [YouTube Linki](<a href = "https://www.youtube.com/watch?v=ww7JLAVdDgs">) *(Yüklenmediyse linki güncelleyin)*
 
 
 
